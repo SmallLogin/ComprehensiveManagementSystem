@@ -1,0 +1,13 @@
+#Sat Feb 24 16:34:25 CST 2018
+myeclipseTomcatServer.tiku.deployIsOverProject=false
+myeclipseTomcatServer.tiku.deploymentPath=C\:\\Users\\Administrator\\Workspaces\\MyEclipse 8.5\\.metadata\\.me_tcat\\webapps\\tiku
+myeclipseTomcatServer.tiku.isExploded=true
+myeclipseTomcatServer.tiku.altContextRoot=/tiku
+myeclipseTomcatServer.tiku.isUptoDate=true
+myeclipseTomcatServer.tiku.contextRoot=/tiku
+myeclipseTomcatServer.tiku.isDeployed=true
+myeclipseTomcatServer.tiku.shouldOverwrite=false
+myeclipseTomcatServer.tiku.type=WebDeployment
+myeclipseTomcatServer.tiku.shouldBackup=false
+eclipse.preferences.version=1
+myeclipseTomcatServer.tiku.IEARProjectName=

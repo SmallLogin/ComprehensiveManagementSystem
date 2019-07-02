@@ -1,0 +1,276 @@
+
+
+ 
+ <%
+	
+	if((String)request.getSession().getAttribute("username")==null || (String)request.getSession().getAttribute("username")=="")  //判断用户是否已经登陆，如果没有，则给出登陆框，如果有则显示当前用户信息
+	{
+			out.print("<script>alert('对不起,请您先登陆!');window.history.go(-1);</script>");
+	}
+	 %>
+<%@ page language="java"  pageEncoding="gb2312"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<%@ page language="java" import="java.sql.*" %>
+
+
+<jsp:useBean id="connDbBean" scope="page" class="db.db"/>
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>计算机语言类课程题库综合管理系统</title><LINK href="css.css" type=text/css rel=stylesheet>
+<style type="text/css">
+<!--
+.STYLE2 {color: #FFFFFF}
+.STYLE4 {color: #FFFFFF; font-weight: bold; }
+.STYLE6 {color: #198A95; font-weight: bold; }
+.STYLE5 {	color: #72AC27;
+	font-size: 26pt;
+}
+-->
+</style>
+
+<link href="qtimages/StyleSheet.css" rel="stylesheet" type="text/css">
+  </head>
+  
+  <script language="javascript">
+function check()
+{
+		alert('txt文件已经生成，请在E盘查看');
+	
+}
+</script>
+
+  <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+  <table id="__01" width="100%" height="193" border="0" cellpadding="0" cellspacing="0">
+    
+    <tr>
+      <td height="162" align="center">
+	  <%
+  String id=request.getParameter("id");
+  String sql="",nnn="",bianhao="",bbb="",ccc="",ddd="";
+											sql="select * from shijuanshengcheng where id="+id+"";
+											 ResultSet RS_result=connDbBean.executeQuery(sql);
+								 while(RS_result.next()){
+								 nnn=RS_result.getString("xuanzeti");
+								 bianhao=RS_result.getString("shijuanbianhao");
+								 bbb=RS_result.getString("tiankongti");
+								 ccc=RS_result.getString("panduanti");
+								
+								 }
+   %>
+            <p>试卷编号：<%=bianhao%></p>
+ 
+ <%@ page language="java" import="java.io.*" %>           
+ <%
+	File file =new File("E:\\TEST.txt");
+	FileWriter fw=new FileWriter(file);
+	String str="试卷编号："+bianhao;	
+	if(file.exists())
+	{
+		fw.write(str);
+	}
+	else
+	{
+		file.createNewFile();
+		fw.write(str);
+	}
+	FileReader fr =new FileReader(file);
+	int length=0;
+	char[] charBuffer=new char[10];
+	while((length=fr.read(charBuffer))!=-1)
+	{
+		out.write(charBuffer,0,length);
+	}
+	//fw.close();
+ %> 
+            
+            <table width="98%" height="103" border="1" cellpadding="1" cellspacing="0" bordercolor="#F8C878">
+              <tr>
+                <td height="33" colspan="2">选择题(每题2分)</td>
+
+              </tr>
+<%	
+fw.append("\r\n");
+	fw.append("\r\n");
+	fw.append("一、选择题(每题2分)");
+	fw.append("\r\n");
+	fw.append("\r\n");
+                       
+ %>
+              <%
+											
+  sql="select * from xuanzeti where id in ("+nnn+")";
+  
+  sql=sql+" order by id desc";
+  RS_result=connDbBean.executeQuery(sql);
+  id="";
+String timu="";String xuanxiangA="";String xuanxiangB="";String xuanxiangC="";String xuanxiangD="";String daan="";String nanyichengdu="";
+ String addtime="";
+ int i=0;
+ 
+ 
+ 
+ 
+ while(RS_result.next()){
+ i=i+1;
+ id=RS_result.getString("id");
+timu=RS_result.getString("shiti");xuanxiangA=RS_result.getString("xuanxiangA");
+xuanxiangB=RS_result.getString("xuanxiangB");xuanxiangC=RS_result.getString("xuanxiangC");xuanxiangD=RS_result.getString("xuanxiangD");
+daan=RS_result.getString("daan");
+//nanyichengdu=RS_result.getString("nanyichengdu");
+ addtime=RS_result.getString("addtime");
+ fw.append("\r\n");
+ String I=Integer.toString(i);
+ fw.append(I+"、"+timu);
+ fw.append("\r\n");
+ fw.append("A: "+xuanxiangA+"     B:  "+xuanxiangB+"    C:  "+xuanxiangC+"       D:  "+xuanxiangD);
+								%>
+
+
+              <tr>
+                <td width="8%" height="33">试题<%=i%>：
+					</td>
+                <td>题目：<%=timu%>
+                    <input name="xztshitida<%=i%>" type="hidden" id="xztshitida<%=i%>" value="<%=daan%>"></td>
+              </tr>
+
+              <tr>
+                <td rowspan="4">选项</td>
+                <td width="92%"><input type="radio" name="xztxxa<%=i%>" value="A">
+                  选项A：<%=xuanxiangA%></td>
+              </tr>
+              <tr>
+                <td><input type="radio" name="xztxxa<%=i%>" value="B">
+选项B：<%=xuanxiangB%></td>
+              </tr>
+              <tr>
+                <td><input type="radio" name="xztxxa<%=i%>" value="C">
+选项C：<%=xuanxiangC%></td>
+              </tr>
+              <tr>
+                <td><input type="radio" name="xztxxa<%=i%>" value="D">
+选项D：<%=xuanxiangD%></td>
+              </tr>
+             
+
+              <%
+       					 		
+       					   }
+											  %>
+
+
+            </table>
+            
+
+            <table width="98%" height="103" border="1" cellpadding="1" cellspacing="0" bordercolor="#F8C878">
+              <tr>
+                <td height="33" colspan="3">填空题(每题3分)</td>
+              </tr>
+              <%
+											
+  sql="select * from tiankongti where id in ("+bbb+")";
+  
+  sql=sql+" order by id desc";
+  RS_result=connDbBean.executeQuery(sql);
+  id="";
+  i=0;
+  
+   fw.append("\r\n"); 
+   fw.append("\r\n");
+   fw.append("\r\n");
+   fw.append("\r\n");
+   fw.append("二、填空题");
+ 
+ 
+ 
+ 
+ while(RS_result.next()){
+ i=i+1;
+ id=RS_result.getString("id");
+timu=RS_result.getString("shiti");
+daan=RS_result.getString("daan");
+//nanyichengdu=RS_result.getString("nanyichengdu");
+ addtime=RS_result.getString("addtime");
+ 
+ fw.append("\r\n"); 
+ String I=Integer.toString(i);
+ fw.append(I+"、"+timu);
+
+
+											%>
+              <tr>
+                <td width="9%" height="33">试题<%=i%>：</td>
+                <td colspan="2">题目：<%=timu%>
+                    <input name="tdtshitida<%=i%>" type="hidden" id="tdtshitida<%=i%>" value="<%=daan%>"></td>
+              </tr>
+              <tr>
+                <td>答案：</td>
+                <td colspan="2"><input name="tktdaan<%=i%>" type="text" id="tktdaan<%=i%>"></td>
+              </tr>
+              
+              <%
+											  }
+											  %>
+            </table>            
+            <table width="98%" height="103" border="1" cellpadding="1" cellspacing="0" bordercolor="#F8C878">
+              <tr>
+                <td height="33" colspan="3">判断题(每题10分)</td>
+              </tr>
+              <%
+											
+  sql="select * from panduanti where id in ("+ccc+")";
+  
+  sql=sql+" order by id desc";
+  RS_result=connDbBean.executeQuery(sql);
+  id="";
+  i=0;
+ 
+    fw.append("\r\n"); 
+   fw.append("\r\n");
+   fw.append("\r\n");
+   fw.append("\r\n");
+   fw.append("三、判断题");
+ 
+ 
+ 
+ while(RS_result.next()){
+ i=i+1;
+ id=RS_result.getString("id");
+timu=RS_result.getString("shiti");
+daan=RS_result.getString("daan");
+//nanyichengdu=RS_result.getString("nanyichengdu");
+ addtime=RS_result.getString("addtime");
+ 
+  fw.append("\r\n"); 
+ String I=Integer.toString(i);
+ fw.append(I+"、  "+timu);
+											%>
+              <tr>
+                <td width="9%" height="33">试题<%=i%>：</td>
+                <td colspan="2">题目：<%=timu%>
+                    <input name="pdtshitida<%=i%>" type="hidden" id="pdtshitida<%=i%>" value="<%=daan%>"></td>
+              </tr>
+              <tr>
+                <td>答案：</td>
+                <td colspan="2"><input type="radio" name="pdtxxa<%=i%>" value="对"> 
+                  对
+                    <input type="radio" name="pdtxxa<%=i%>" value="错">
+                    错</td>
+              </tr>
+              <%
+											  }
+											  %>
+            </table>            
+          <p>&nbsp;</p>
+      </td>
+    </tr>
+  </table>
+  <%fw.close(); %>>
+  <input type="submit" name="Submit" value="获取txt文本" onClick="return check();">
+  </body>
+</html>
+
